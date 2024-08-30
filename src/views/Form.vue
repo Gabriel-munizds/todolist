@@ -36,19 +36,40 @@
 </template>
 
 <script>
+import ToastMixin  from "@/mixins/ToastMixin.js";
 export default {
   name: "Form",
+
+  mixins : [ToastMixin], 
 
   data(){
     return {
       form : {
         subject : "",
         description : ""
-      }
+      },
+      methodSave: "novo"
     }
+  },
+  created() {
+    if(this.$route.params.index === 0 || this.$route.params.index !== undefined){
+      this.methodSave = "update";
+      let tasks = JSON.parse(localStorage.getItem("tasks"));
+      this.form = tasks[this.$router.params.index];
+    }
+    
   },
   methods : {
     salvar(){
+      if(this.methodSave === "update"){
+        let tasks = JSON.parse(localStorage.getItem("tasks"));
+        tasks[this.$route.params.index] = this.form;
+        localStorage.setItem("tasks", JSON.stringify(tasks)); 
+        this.showToast("sucess", "Sucesso!", "Tarefa cadastrada com sucesso");
+        this.$router.push({ name : "list"});
+        return;
+      }
+
       let tasks = (localStorage.getItem("tasks")) ? JSON.parse(localStorage.getItem("tasks")) : [];
       tasks.push(this.form);
       localStorage.setItem("tasks", JSON.stringify(tasks));    
