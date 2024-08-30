@@ -37,6 +37,7 @@
 
 <script>
 import ToastMixin  from "@/mixins/ToastMixin.js";
+import {required, minLength} from "vuelidate/lib/validators";
 export default {
   name: "Form",
 
@@ -51,6 +52,15 @@ export default {
       methodSave: "novo"
     }
   },
+
+  validations : {
+    form : {
+      
+    }
+
+  },
+
+
   created() {
     if(this.$route.params.index === 0 || this.$route.params.index !== undefined){
       this.methodSave = "update";

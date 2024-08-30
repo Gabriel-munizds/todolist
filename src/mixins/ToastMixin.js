@@ -3,7 +3,7 @@ export default {
         showToast(variant, title, description){
             this.$root.$bvToast.toast(description, {
                 title : title,
-                autoHideDelay : 3000,
+                autoHideDelay : 300,
                 variant : variant,
                 solid : true
             });
