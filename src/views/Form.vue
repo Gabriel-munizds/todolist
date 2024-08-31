@@ -1,6 +1,5 @@
 <template>
   <div class="container mt-2">
-    <h1>Formulário</h1>
     <b-form>
       <b-form-group
       label="Título"
