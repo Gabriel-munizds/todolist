@@ -8,12 +8,15 @@
       >
       <b-form-input
       id="subject"
-      v-model="form.subject"
+      v-model.trim="$v.form.subject.$model"
       type="text"
       placeholder="Ex: lavar carro"
       required
-      autocomplite="off"
+      autocomplete="off"
+      :state="getValidation"
+      aria-describedby="subject-feedback"
       ></b-form-input>
+      <b-form-invalid-feedback id="subject-feedback"> Campo Obrigatório</b-form-invalid-feedback>
       </b-form-group>
       <b-form-group
       label="Descrição"
@@ -29,8 +32,12 @@
       ></b-form-textarea>
       </b-form-group>
 
-      <b-button type ="submit" variant = "outline-primary" @click="salvar">Salvar</b-button>
-
+      <b-button
+          type ="submit"
+          variant = "outline-primary" 
+          @click="salvar"
+          :disabled = "!getValidation"
+          >Salvar</b-button>
     </b-form>
   </div>
 </template>
@@ -55,11 +62,22 @@ export default {
 
   validations : {
     form : {
-      
+      subject :{
+        required, 
+        minLength: minLength(3)
+      }
     }
 
   },
+  computed : {
+    getValidation(){
+      if(this.$v.form.subject.$dirty === false){
+        return null;
+      }
+      return !this.$v.form.subject.$error;
+    }
 
+  },
 
   created() {
     if(this.$route.params.index === 0 || this.$route.params.index !== undefined){
